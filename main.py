@@ -2,10 +2,11 @@ import paramiko
 import time
 from config import *
 
-def connect_to_hosts(host): #  Подключение к нодам
+
+def connect_to_hosts(host):  # Подключение к нодам
     try:
         # key = paramiko.RSAKey.from_private_key_file(path_pkey) #  Указываем что вместо пароля используем ключ и путь к приватному ключу
-        ssh = paramiko.client.SSHClient() #  Создание ssh клиента
+        ssh = paramiko.client.SSHClient()  # Создание ssh клиента
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         # Параметры удаленного сервера. Если подключение по паролю то вместо pkey=key вставить password=password
         ssh.connect(host, port=port, username=username, password=password)
@@ -13,7 +14,8 @@ def connect_to_hosts(host): #  Подключение к нодам
     except Exception:
         return None
 
-def check_ssh_connect(hosts): # Проверка подключения
+
+def check_ssh_connect(hosts):  # Проверка подключения
     print(f"Check connecting to hosts...")
     for host in hosts:
         connect = connect_to_hosts(host)
@@ -25,7 +27,8 @@ def check_ssh_connect(hosts): # Проверка подключения
         connect.close()
     return True
 
-def execute_sudo_command(function_connect, command): #  Выполнения комманд под sudo
+
+def execute_sudo_command(function_connect, command):  # Выполнения комманд под sudo
     # Подключаемся к root сессии и выполняем команды по root
     stdin, stdout, stderr = function_connect.exec_command(f"sudo {command}")
     # stdin.write(f'{password}\n') #  Используем если в /etc/sudoers не отключена проверка пароля
@@ -46,13 +49,14 @@ def execute_sudo_command(function_connect, command): #  Выполнения к�
         print(f"ERROR: {error}")
     return output
 
+
 def sftp_copy(host, local_path, remote_path):  # копирование на ноды указанных в переменных файлов
     try:
         # Устанавливаем SSH-соединение
-        key = paramiko.RSAKey.from_private_key_file(path_pkey)
+        #        key = paramiko.RSAKey.from_private_key_file(path_pkey)
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect(host, username=username, pkey=key)
+        ssh.connect(host, username=username, password=password)
 
         # Используем SFTP для передачи файла
         sftp = ssh.open_sftp()
@@ -62,15 +66,17 @@ def sftp_copy(host, local_path, remote_path):  # копирование на н�
     finally:
         sftp.close()
 
-def docker_ps(function_coonect):
+
+def docker_ps(function_connect):
     commands = [
         'docker ps | grep front'
     ]
 
     for command in commands:
         print(f"Executing as sudo {command}")
-        execute_sudo_command(function_coonect, command)
+        execute_sudo_command(function_connect, command)
         time.sleep(2)
+
 
 if check_ssh_connect(hip_hosting):
     for host in hip_hosting:
