@@ -17,7 +17,8 @@ def add_client_to_wg0conf(function_connect):
         f'echo "[Peer]" | sudo tee -a {path_to_config}wg0.conf',
         f'echo "#{client_name}" | sudo tee -a {path_to_config}wg0.conf',
         f'echo "PublicKey = $(cat {path_to_config}ira_publickey)" | sudo tee -a {path_to_config}wg0.conf',
-        f'echo "AllowedIPs = {client_ip}/32" | sudo tee -a {path_to_config}wg0.conf'
+        f'echo "AllowedIPs = {client_ip}/32" | sudo tee -a {path_to_config}wg0.conf',
+        'systemctl restart wg-quick@wg0'
     ]
 
     for command in commands:
@@ -52,7 +53,7 @@ if check_ssh_connect(hip_hosting):
         print(f"\033[44m Check host {host}\033[0m")
         connect = connect_to_hosts(host)
         generate_client_keys(connect)
-        add_client_to_wg0conf(connect)
         create_client_conf(connect)
+        add_client_to_wg0conf(connect)
         connect.close()
 
