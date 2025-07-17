@@ -35,7 +35,7 @@ def create_client_conf(function_connect):
         f'echo "[Peer]" | sudo tee -a {path_to_config}{client_name}.conf',
         f'echo "PublicKey = $(cat {path_to_config}publickey)" | sudo tee -a {path_to_config}{client_name}.conf',
         f'echo "Endpoint = {wireguard_ip}:{wireguard_port}" | sudo tee -a {path_to_config}{client_name}.conf',
-        f'echo "AllowedIPs = 0.0.0.0/0, ::/0" | sudo tee -a {path_to_config}{client_name}.conf'
+        f'echo "AllowedIPs = {AllowedIPs}" | sudo tee -a {path_to_config}{client_name}.conf'
     ]
 
     for command in commands:
