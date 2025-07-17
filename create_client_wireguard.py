@@ -45,7 +45,7 @@ def create_client_conf(function_connect):
 
 
 client_name = input('\033[34mEnter username of a new client:\033[0m ')
-client_ip = input('\033[34mCheck free IP address in /etc/wireguard/wg0.conf and Enter IP address for a new client:\033[0m ')
+client_ip = input(f'\033[34mCheck free IP address in {path_to_config}wg0.conf and Enter IP address for a new client:\033[0m ')
 
 if check_ssh_connect(hip_hosting):
     for host in hip_hosting:
