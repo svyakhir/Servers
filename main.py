@@ -78,9 +78,9 @@ def docker_ps(function_connect):
         time.sleep(2)
 
 
-if check_ssh_connect(hip_hosting):
-    for host in hip_hosting:
-        print(f"\033[44m Check host {host}\033[0m")
-        connect = connect_to_hosts(host)
-        docker_ps(connect)
-    connect.close()
+# if check_ssh_connect(hip_hosting):
+#     for host in hip_hosting:
+#         print(f"\033[44m Check host {host}\033[0m")
+#         connect = connect_to_hosts(host)
+#         docker_ps(connect)
+#         connect.close()
